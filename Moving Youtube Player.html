@@ -1,70 +1,95 @@
 <!Doctype html>
 <html>
 <style>
-#myContainer {
-  width: 400px;
-  height: 300px;
-  position: relative;
-}
-#myAnimation {
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  background: red;
-}
-#myRectangle {
-	width: 100px;
-    height: 40px;
-    xPos: 0px;
-    yPos; 0px;
-    position: relative;
-    background: blue;
-}
-#myYoutubePlayer {
-	width: 120px;
-    height: 60px;
-    position: relative;
-}
+    #myContainer {
+        width: 400px;
+        height: 300px;
+        position: relative;
+    }
 
+    #myRectangle {
+        width: 100px;
+        height: 40px;
+        position: relative;
+        background: blue;
+    }
+
+    #myYoutubePlayer {
+        width: 120px;
+        height: 60px;
+        position: absolute;
+    }
+
+    #myYoutubePlayer1 {
+        width: 140px;
+        height: 80px;
+        left: 0;
+        top: 0;
+        position: relative;
+    }
 </style>
+
 <body>
 
-<h1>JavaScript Animation</h1>
+    <h1>JavaScript Animation</h1>
 
-<button onclick="MoveObject('myRectangle')">click me</button>
-<button onclick="MoveObject('myYoutubePlayer')">Go Youtube</button>
+    <button onclick="moveObject('myRectangle')">click me</button>
+    <button onclick="moveObject('myYoutubePlayer1')">Go Youtube</button>
 
-<div id="myContainer">
-<iframe id='myYoutubePlayer' src="https://www.youtube.com/embed/WrRSbvUZca8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-<div id="myRectangle" onclick="MoveObject('myRectangle')"></div>
-</div>
+    <div id="myContainer">
 
-<script>
-	var rectId = 0;
-    function MoveObject(objectName) {
-    	let changeX = 1;
-        let changeY = 1;
-    	var rectElem = document.getElementById(objectName);
-        let xPos=parseInt(rectElem.style.left.replace("px", ""));
-        let yPos=rectElem.offsetHeight;
-        clearInterval(rectId);
-        rectId = setInterval(frame, 20);
-        function frame(){
-        	if (xPos < 0 || xPos > 400 - rectElem.offsetWidth) {
-            	changeX = -changeX;
+        <div id="myYoutubePlayer1" onclick="moveObject('myRectangle')">
+            <iframe id='myYoutubePlayer' src="https://www.youtube.com/embed/WrRSbvUZca8"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen onclick="moveObject('myYoutubePlayer')"></iframe>
+        </div>
+
+        <div id="myRectangle" onclick="moveObject('myRectangle')"></div>
+
+        <script>
+            var rectId = null;
+            function moveObject(objectName) {
+                let changeX = 2;
+                let changeY = 2;
+                count = 0;
+                var rectElem = document.getElementById(objectName);
+                let computedStyles = window.getComputedStyle(rectElem);
+                let xPos = parseInt(computedStyles.left);
+                let yPos = parseInt(computedStyles.top);
+                clearInterval(rectId);
+                rectId = setInterval(frame, 15);
+                function frame() {
+                    count++;
+                    if (count % 10 == 0) {
+                        changeX = (changeX / Math.abs(changeX)) * (((Math.random()*10) % 8) - 1);
+                        changeY = (changeY / Math.abs(changeY)) * (((Math.random()*10) % 8) - 1);
+                    }
+                    
+                    if (changeX < 0 && xPos < 0) {
+                        changeX = Math.abs(changeX);
+                    } else if (changeX > 0 && xPos > 400 - rectElem.offsetWidth) {
+                        changeX = -Math.abs(ChangeX);
+                    }
+    
+                    if (changeY < 0 && yPos < 0) {
+                        changeY = Math.abs(changeY);
+                    } else if (changeY > 0 && yPos > 300 - rectElem.offsetHeight) {
+                        changeY = -Math.abs(changeY);
+                    }
+    
+                    xPos += changeX;
+                    yPos += changeY;
+    
+                    rectElem.style.top = yPos + 'px';
+                    rectElem.style.left = xPos + 'px';
+                }
             }
-            if (yPos < 0 || yPos > 300 - rectElem.offsetHeight) {
-            	changeY = -changeY;
-            }
-            
-            xPos += changeX;
-            yPos += changeY;
-            
-            rectElem.style.top = yPos + 'px';
-            rectElem.style.left = xPos + 'px';
-        }
-    }
-</script>
+        </script>
+    </div>
+
+    
 
 </body>
+
 </html>
