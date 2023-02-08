@@ -45,7 +45,7 @@
     	let changeX = 1;
         let changeY = 1;
     	var rectElem = document.getElementById(objectName);
-        let xPos=rectElem.offsetWidth;
+        let xPos=parseInt(rectElem.style.left.replace("px", ""));
         let yPos=rectElem.offsetHeight;
         clearInterval(rectId);
         rectId = setInterval(frame, 20);
