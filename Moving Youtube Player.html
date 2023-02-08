@@ -7,54 +7,40 @@
         position: relative;
     }
 
-    #myRectangle {
-        width: 100px;
-        height: 40px;
-        position: relative;
-        background: blue;
-    }
-
     #myYoutubePlayer {
         width: 120px;
         height: 60px;
-        position: absolute;
-    }
-
-    #myYoutubePlayer1 {
-        width: 140px;
-        height: 80px;
-        left: 0;
-        top: 0;
         position: relative;
     }
 </style>
 
 <body>
 
-    <h1>JavaScript Animation</h1>
+    <h1>My Annoying Youtube Player :3</h1>
 
-    <button onclick="moveObject('myRectangle')">click me</button>
-    <button onclick="moveObject('myYoutubePlayer1')">Go Youtube</button>
+    <div id="myContainer" >
 
-    <div id="myContainer">
-
-        <div id="myYoutubePlayer1" onclick="moveObject('myRectangle')">
-            <iframe id='myYoutubePlayer' src="https://www.youtube.com/embed/WrRSbvUZca8"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen onclick="moveObject('myYoutubePlayer')"></iframe>
-        </div>
-
-        <div id="myRectangle" onclick="moveObject('myRectangle')"></div>
+        <iframe id='myYoutubePlayer' src="https://www.youtube.com/embed/WrRSbvUZca8?start=50"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
 
         <script>
+            var monitor = setInterval(function(){
+                let elem = document.activeElement;
+                if(elem && elem.tagName == 'IFRAME'){
+                    moveObject(elem)
+                    clearInterval(monitor);
+                }
+            }, 100);
+
+
             var rectId = null;
-            function moveObject(objectName) {
+            function moveObject(elem) {
                 let changeX = 2;
                 let changeY = 2;
                 count = 0;
-                var rectElem = document.getElementById(objectName);
-                let computedStyles = window.getComputedStyle(rectElem);
+                let computedStyles = window.getComputedStyle(elem);
                 let xPos = parseInt(computedStyles.left);
                 let yPos = parseInt(computedStyles.top);
                 clearInterval(rectId);
@@ -62,27 +48,27 @@
                 function frame() {
                     count++;
                     if (count % 10 == 0) {
-                        changeX = (changeX / Math.abs(changeX)) * (((Math.random()*10) % 8) - 1);
-                        changeY = (changeY / Math.abs(changeY)) * (((Math.random()*10) % 8) - 1);
+                        changeX = ((changeX / Math.abs(changeX)) * ((Math.random()*6) % 6));
+                        changeY = ((changeY / Math.abs(changeY)) * ((Math.random()*6) % 6));
                     }
                     
                     if (changeX < 0 && xPos < 0) {
                         changeX = Math.abs(changeX);
-                    } else if (changeX > 0 && xPos > 400 - rectElem.offsetWidth) {
-                        changeX = -Math.abs(ChangeX);
+                    } else if (changeX > 0 && xPos > window.innerWidth - elem.offsetWidth) {
+                        changeX = -Math.abs(changeX);
                     }
     
                     if (changeY < 0 && yPos < 0) {
                         changeY = Math.abs(changeY);
-                    } else if (changeY > 0 && yPos > 300 - rectElem.offsetHeight) {
+                    } else if (changeY > 0 && yPos > window.innerHeight - elem.offsetHeight - 80) {
                         changeY = -Math.abs(changeY);
                     }
     
-                    xPos += changeX;
-                    yPos += changeY;
+                    xPos += changeX - 2;
+                    yPos += changeY - 2;
     
-                    rectElem.style.top = yPos + 'px';
-                    rectElem.style.left = xPos + 'px';
+                    elem.style.top = yPos + 'px';
+                    elem.style.left = xPos + 'px';
                 }
             }
         </script>
