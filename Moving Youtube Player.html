@@ -5,7 +5,6 @@
   width: 400px;
   height: 300px;
   position: relative;
-  background: yellow;
 }
 #myAnimation {
   width: 50px;
@@ -16,6 +15,8 @@
 #myRectangle {
 	width: 100px;
     height: 40px;
+    xPos: 0px;
+    yPos; 0px;
     position: relative;
     background: blue;
 }
@@ -35,7 +36,7 @@
 
 <div id="myContainer">
 <iframe id='myYoutubePlayer' src="https://www.youtube.com/embed/WrRSbvUZca8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-<div id="myRectangle"></div>
+<div id="myRectangle" onclick="MoveObject('myRectangle')"></div>
 </div>
 
 <script>
@@ -43,11 +44,11 @@
     function MoveObject(objectName) {
     	let changeX = 1;
         let changeY = 1;
-        var xPos=0;
-        var yPos=0;
     	var rectElem = document.getElementById(objectName);
+        let xPos=rectElem.offsetWidth;
+        let yPos=rectElem.offsetHeight;
         clearInterval(rectId);
-        rectId = setInterval(frame, 10);
+        rectId = setInterval(frame, 20);
         function frame(){
         	if (xPos < 0 || xPos > 400 - rectElem.offsetWidth) {
             	changeX = -changeX;
